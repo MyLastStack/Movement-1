@@ -15,6 +15,9 @@ public class MovementController : MonoBehaviour
 
     [SerializeField] GameObject weapon;
 
+    // Clamping variables
+    Vector3 angles;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,10 +33,32 @@ public class MovementController : MonoBehaviour
         moveValue = moveAction.ReadValue<Vector2>();
         rotateValue = rotateAction.ReadValue<Vector2>();
 
-        // Rotate player and weapon
+        // Rotate player
         transform.Rotate(Vector3.up, rotateValue.x * rotationSpeed * Time.deltaTime);
-
+        //Rotate weapon
         weapon.transform.Rotate(Vector3.right, rotateValue.y * rotationSpeed * Time.deltaTime);
+
+        // Get the current weapon angles
+        angles = weapon.transform.eulerAngles;
+
+        // Check the angles to see if they need to be clamped
+        if (angles.x > 45.0f && angles.x < 180.0f)
+        {
+            weapon.transform.localRotation = Quaternion.Euler(45.0f, 0, 0);
+        }
+        if (angles.x < 315.0f && angles.x > 180.0f)
+        {
+            weapon.transform.localRotation = Quaternion.Euler(315.0f, 0, 0);
+        }
+
+        var keyboard = Keyboard.current;
+        if (keyboard != null)
+        {
+            if (keyboard.spaceKey.wasPressedThisFrame)
+            {
+                GetComponent<Rigidbody>().AddForce(Vector3.up * 10.0f, ForceMode.VelocityChange);
+            }
+        }
     }
 
     private void FixedUpdate()
