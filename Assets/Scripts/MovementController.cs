@@ -8,7 +8,7 @@ public class MovementController : MonoBehaviour
     // Input variables
     public InputAction moveAction, rotateAction;
 
-    Vector2 moveValue, rotateValue;
+    [SerializeField] Vector2 moveValue, rotateValue;
 
     // Movement variables
     float movementSpeed, rotationSpeed;
