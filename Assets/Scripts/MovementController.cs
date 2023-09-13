@@ -13,7 +13,9 @@ public class MovementController : MonoBehaviour
     // Movement variables
     float movementSpeed, rotationSpeed;
 
-    [SerializeField] GameObject weapon;
+    [SerializeField] GameObject weapon, cam, target;
+
+    RaycastHit hit;
 
     // Clamping variables
     Vector3 angles;
@@ -28,6 +30,16 @@ public class MovementController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        MovePlayer();
+
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit))
+        {
+            target.transform.position = hit.point;
+        }
+    }
+
+    void MovePlayer()
     {
         // Get player input
         moveValue = moveAction.ReadValue<Vector2>();
